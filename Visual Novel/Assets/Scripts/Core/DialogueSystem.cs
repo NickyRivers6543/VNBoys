@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DialogueSystem : MonoBehaviour
 {
@@ -26,13 +27,14 @@ public class DialogueSystem : MonoBehaviour
     public void Say(string speech, bool additive = false, string speaker = "")
     {
         StopSpeaking();
+
+        if (additive)
+            speechText.text = targetSpeech;
+
+
         speaking = StartCoroutine(Speaking(speech, additive, speaker));
     }
-    public void SayAdd(string speech, string speaker = "") {
-        StopSpeaking();
-        speechText.text = targetSpeech;
-        speaking = StartCoroutine(Speaking(speech, true, speaker));
-    }
+
     public void StopSpeaking()
     {
         if (isSpeaking)
@@ -111,12 +113,12 @@ public class DialogueSystem : MonoBehaviour
         /// The main panel containing all dialogue related elements on the UI
         /// </summary>
         public GameObject speechPanel;
-        public Text speakerNameText;
-        public Text speechText;
+        public TextMeshProUGUI speakerNameText;
+        public TextMeshProUGUI speechText;
     }
     public GameObject speechPanel { get { return elements.speechPanel; } }
-    public Text speakerNameText { get { return elements.speakerNameText; } }
-    public Text speechText {get { return elements.speechText; } }
+    public TextMeshProUGUI speakerNameText { get { return elements.speakerNameText; } }
+    public TextMeshProUGUI speechText {get { return elements.speechText; } }
 
 
     #endregion

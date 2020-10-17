@@ -41,10 +41,7 @@ public class Character
 	{
 		if (!enabled)
 			enabled = true;
-		if (!add)
-			dialogue.Say(speech, false, characterName);
-		else
-			dialogue.SayAdd(speech, characterName);
+		dialogue.Say(speech, add, characterName);
 	}
 
 	Vector2 targetPosition;
@@ -114,13 +111,26 @@ public class Character
 		Debug.Log(sprites.Length);
 		Debug.Log(sprites[index]);
 		return sprites[index];
-	}	
-	
-	public Sprite GetSprite(string type) {
-		Sprite sprite = Resources.Load<Sprite>("/images/character/" + characterName + "/" + type);
-		//Debug.Log("images/character/" + characterName + "/" + type);
-		Debug.Log(sprite);
-		return sprite;
+	}
+
+	//public Sprite GetSprite(string spriteName) {
+	//	Sprite sprite = Resources.Load<Sprite>("/images/character/" + characterName + "/" + spriteName);
+	//	//Debug.Log("images/character/" + characterName + "/" + type);
+	//	Debug.Log(sprite);
+	//	return sprite;
+	//}
+
+	public Sprite GetSprite(string spriteName = "")
+	{
+		Sprite[] sprites = Resources.LoadAll<Sprite>("images/character/" + characterName);
+
+		for (int i = 0; i < sprites.Length; i++) {
+			if (sprites[i].name == spriteName) {
+				return sprites[i];
+			}
+		}
+		return sprites.Length > 0 ? sprites[0] : null;
+
 	}
 	public void SetBody(int index) {
 		renderers.bodyRenderer.sprite = GetSprite(index);
@@ -128,8 +138,12 @@ public class Character
 	public void SetBody(Sprite sprite) {
 		renderers.bodyRenderer.sprite = sprite;
 	}	
-	public void SetBody(string  type) {
-		renderers.bodyRenderer.sprite = GetSprite(type);
+	//public void SetBody(string  type) {
+	//	renderers.bodyRenderer.sprite = GetSprite(type);
+	//}
+
+	public void SetBody(string spriteName) {
+		renderers.bodyRenderer.sprite = GetSprite(spriteName);
 	}
 
 
@@ -139,8 +153,13 @@ public class Character
 	public void SetExpression(Sprite sprite) {
 		renderers.expressionRenderer.sprite = sprite;
 	}	
-	public void SetExpression(string type) {
-		renderers.expressionRenderer.sprite = GetSprite(type);
+	//public void SetExpression(string type) {
+	//	renderers.expressionRenderer.sprite = GetSprite(type);
+	//}
+
+	public void SetExpression(string spriteName)
+	{
+		renderers.expressionRenderer.sprite = GetSprite(spriteName);
 	}
 
 	bool isTransitioningBody { get { return transitioningBody != null; } }
